@@ -1,0 +1,86 @@
+body {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: monospace;
+}
+
+#container {
+  position: relative;
+  width: 700px;
+  height: 700px;
+  background-color: #0b0b0b;
+  border: 2px solid #004400;
+  overflow: hidden;
+}
+
+#codeRainCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+#titleArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 25%;
+  border-bottom: 2px solid #003300; /* This draws the visual box at the top */
+  z-index: 2;
+}
+
+#gameTitle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #00ff00;
+  text-shadow:
+    0 0 3px #39ff14,
+    0 0 6px #39ff14,
+    0 0 10px #39ff14,
+    0 0 20px #0fa,
+    0 0 40px #0fa;
+  user-select: none;
+  z-index: 3;
+}
+
+
+#startButton {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0a0;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#loadingBarContainer {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 20px;
+  background-color: #003300;
+  border: 1px solid #00ff00;
+  display: none;
+  z-index: 2;
+}
+
+#loadingBar {
+  height: 100%;
+  width: 0;
+  background-color: #00ff00;
+}

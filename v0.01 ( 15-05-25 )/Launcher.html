@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>World in a Pixel - Launcher</title>
+  <link rel="stylesheet" href="LauncherStyles.css" />
+  <style>
+    body {
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: monospace;
+    }
+
+    #container {
+      position: relative;
+      width: 700px;
+      height: 700px;
+      background-color: #0b0b0b;
+      border: 2px solid #004400;
+      overflow: hidden;
+    }
+
+    #codeRainCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    #titleArea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 25%;
+      border-bottom: 2px solid #003300;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    #gameTitle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 3rem;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow:
+        0 0 3px #39ff14,
+        0 0 6px #39ff14,
+        0 0 10px #39ff14,
+        0 0 20px #0fa,
+        0 0 40px #0fa;
+      user-select: none;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    #startButton {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #0a0;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    #loadingBarContainer {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 20px;
+      background-color: #003300;
+      border: 1px solid #00ff00;
+      display: none;
+      z-index: 2;
+    }
+
+    #loadingBar {
+      height: 100%;
+      width: 0;
+      background-color: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas id="codeRainCanvas" width="700" height="700"></canvas>
+
+    <div id="titleArea">
+      <div id="gameTitle">World in a Pixel</div>
+    </div>
+
+    <button id="startButton">Start Game</button>
+    <div id="loadingBarContainer">
+      <div id="loadingBar"></div>
+    </div>
+  </div>
+
+  <script>
+    const title = document.getElementById("gameTitle");
+    const titleArea = document.getElementById("titleArea");
+    const startButton = document.getElementById("startButton");
+    const loadingBar = document.getElementById("loadingBar");
+    const loadingBarContainer = document.getElementById("loadingBarContainer");
+
+    let loading = false;
+
+    let titleX = 0;
+    let titleY = 0;
+    let velocityX = 0.7;
+    let velocityY = 0.2;
+    let blinkOpacity = 1;
+    let blinkDirection = -1;
+
+    function animateTitle() {
+      titleX += velocityX;
+      titleY += velocityY;
+
+      const maxX = titleArea.clientWidth - title.offsetWidth;
+      const maxY = titleArea.clientHeight - title.offsetHeight;
+
+      // Bounce and clamp position inside bounds to fix glitch
+      if (titleX <= 0) {
+        velocityX = Math.abs(velocityX);
+        titleX = 0;
+      } else if (titleX >= maxX) {
+        velocityX = -Math.abs(velocityX);
+        titleX = maxX;
+      }
+
+      if (titleY <= 0) {
+        velocityY = Math.abs(velocityY);
+        titleY = 0;
+      } else if (titleY >= maxY) {
+        velocityY = -Math.abs(velocityY);
+        titleY = maxY;
+      }
+
+      title.style.left = titleX + "px";
+      title.style.top = titleY + "px";
+
+      // Adjust blinking with higher min opacity
+      blinkOpacity += blinkDirection * 0.0028;
+      if (blinkOpacity >= 1) blinkDirection = -1;
+      else if (blinkOpacity <= 0.3) blinkDirection = 1;
+
+      title.style.opacity = blinkOpacity;
+
+      if (!loading) {
+        requestAnimationFrame(animateTitle);
+      }
+    }
+
+    animateTitle();
+
+    startButton.addEventListener("click", () => {
+      startButton.style.display = "none";
+      loadingBarContainer.style.display = "block";
+      loading = true;
+
+      startCodeRain();
+
+      let progress = 0;
+      const loadingInterval = setInterval(() => {
+        progress += 1;
+        loadingBar.style.width = progress + "%";
+        if (progress >= 100) {
+          clearInterval(loadingInterval);
+          window.open("Core.html", "_blank", "width=1200,height=1400,resizable=no");
+        }
+      }, 40);
+    });
+
+    function startCodeRain() {
+      const canvas = document.getElementById("codeRainCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const letters = "01";
+      const fontSize = 16;
+      const columns = canvas.width / fontSize;
+
+      let drops = [];
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -20;
+      }
+
+      function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#0f0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+
+          ctx.fillText(text, x, y);
+
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+
+          drops[i]++;
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+  </script>
+</body>
+</html>
