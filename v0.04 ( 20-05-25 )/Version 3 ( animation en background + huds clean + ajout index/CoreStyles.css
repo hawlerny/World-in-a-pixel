@@ -1,0 +1,148 @@
+/* 1. Fullscreen body setup */
+body {
+  margin: 0;
+  background-color: black;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* 2. 1px edge border - darker green */
+#screenBorder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  box-shadow: inset 0 0 0 1px #050; /* Darker green */
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* 3. Title - centered horizontally and vertically aligned */
+#gameTitle {
+  color: #0f0;
+  font-size: 32px;
+  margin: 0;
+  height: 80px;
+  display: flex;
+  pointer-events: none;
+  justify-content: center;
+  align-items: center;
+  gap: 6px; /* consistent spacing */
+  padding-top: 10px;
+  animation: slowBlink 10s linear infinite;
+  z-index: 2;
+}
+
+/* Slow blink for whole title */
+@keyframes slowBlink {
+  0%, 25%, 50%, 75%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.5; }
+}
+
+.pixelBox {
+  width: 14px;
+  height: 14px;
+  background-color: #0f0;
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  left: 14px;
+  animation: terminalBlink 1.2s steps(1, start) infinite;
+}
+
+/* Terminal-style blinking for pixelBox */
+@keyframes terminalBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+
+/* 5. Game layout */
+#gameLayout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  z-index: 2;
+}
+
+/* 7. Main game box */
+#gameContainer {
+  width: 1000px;
+  height: 600px;
+  background-color: #222;
+  border: 2px solid #0f0;
+  box-shadow: 0 0 18px #0f0;
+  margin-top: -175px; /* shifts game box upward */
+  z-index: 2;
+}
+
+/* 8. Canvas inside game */
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #222;
+}
+/* 9. HUD Panels */
+.hudPanel {
+  position: fixed;
+  color: #0f0;
+  background-color: #111;
+  font-size: 16px;
+  border: 1px solid #0f0;
+  padding: 6px;
+  z-index: 3;
+  font-family: monospace;
+  box-shadow: 0 0 8px #0f0;
+  opacity: 0.98;
+}
+
+/* Left Panel - Actions */
+#hudLeft {
+  top: 50px;
+  left: 50px;
+  width: 175px;
+  height: 750px;
+  text-align: center;
+}
+
+/* Right Panel - Tools */
+#hudRight {
+  top: 50px;
+  right: 50px;
+  width: 175px;
+  height: 750px;
+  text-align: center;
+}
+
+/* Bottom Panel - Inventory */
+#hudBottom {
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 850px;
+  height: 175px;
+  text-align: center;
+  line-height: -130px;
+}
+#backgroundCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  background: black;
+}
+
