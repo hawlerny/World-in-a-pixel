@@ -446,7 +446,7 @@ function tryLaunchCore() {
     
     if (!retryInterval) {
       retryInterval = setInterval(() => {
-        const popupRetry = window.open("core.html", "_blank", "width=800,height=600");
+        const popupRetry = window.open("core.html", "_blank", "width=1000,height=1200");
         if (popupRetry && !popupRetry.closed) {
           clearInterval(retryInterval);
           setTimeout(() => window.close(), 500);
