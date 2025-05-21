@@ -7,6 +7,31 @@ window.onload = () => {
   let rows = 65;
   let mesh = [];
   let t = 0;
+  
+    const title = document.getElementById("gameTitle");
+  const gameWrapper = document.getElementById("gameWrapper");
+
+function updateTitlePosition() {
+  const gameRect = gameWrapper.getBoundingClientRect();
+  const titleHeight = title.offsetHeight;
+  const safeGap = 5; // Extra space between title and game box
+  const topPadding = 10; // Minimum distance from the top of the screen
+
+  // Calculate the space the title would need to avoid overlap
+  const desiredClearance = titleHeight + safeGap;
+
+  // Distance from top of screen to top of game box
+  const gameTop = gameRect.top;
+
+  // If game is getting too close, move the title up
+  const proposedTop = Math.min(gameTop - desiredClearance, topPadding);
+
+  title.style.top = `${proposedTop}px`;
+}
+
+  updateTitlePosition();
+  window.addEventListener("resize", updateTitlePosition);
+
 
   function resize() {
     width = canvas.width = window.innerWidth;

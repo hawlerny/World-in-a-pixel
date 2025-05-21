@@ -1,4 +1,3 @@
-/* 1. Fullscreen body setup */
 body {
   margin: 0;
   background-color: black;
@@ -8,8 +7,8 @@ body {
   box-sizing: border-box;
   font-family: monospace;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;  /* center horizontally */
+  align-items: center;      /* center vertically */
   position: relative;
 }
 
@@ -27,18 +26,21 @@ body {
 
 /* 3. Title - centered horizontally and vertically aligned */
 #gameTitle {
+  transition: top 0.3s ease;
+  position: fixed;
   color: #0f0;
   font-size: 32px;
   margin: 0;
   height: 80px;
   display: flex;
-  pointer-events: none;
   justify-content: center;
   align-items: center;
-  gap: 6px; /* consistent spacing */
+  gap: 6px;
   padding-top: 10px;
   animation: slowBlink 10s linear infinite;
-  z-index: 2;
+  z-index: 1000;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* Slow blink for whole title */
@@ -64,26 +66,15 @@ body {
   50.01%, 100% { opacity: 0; }
 }
 
-
-/* 5. Game layout */
-#gameLayout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  width: 100%;
-  z-index: 2;
-}
-
 /* 7. Main game box */
 #gameContainer {
   width: 1000px;
-  height: 600px;
+  height: 610px;
   background-color: #222;
   border: 2px solid #0f0;
   box-shadow: 0 0 18px #0f0;
-  margin-top: -175px; /* shifts game box upward */
-  z-index: 2;
+  position: relative; /* for HUD panels absolute inside wrapper */
+  margin: 0;
 }
 
 /* 8. Canvas inside game */
@@ -95,46 +86,51 @@ canvas {
 }
 /* 9. HUD Panels */
 .hudPanel {
-  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  cursor: default;
   color: #0f0;
   background-color: #111;
   font-size: 16px;
   border: 1px solid #0f0;
   padding: 6px;
-  z-index: 3;
   font-family: monospace;
   box-shadow: 0 0 8px #0f0;
   opacity: 0.98;
+  text-align: center;
+  z-index: 20; /* above game container */
 }
 
-/* Left Panel - Actions */
+/* Left panel: left side outside game box */
 #hudLeft {
-  top: 50px;
-  left: 50px;
+  top: -25px;           /* lifted more */
+  left: -167px;         /* 175px - 10px overlap = 165px shift */
   width: 175px;
-  height: 750px;
-  text-align: center;
+  height: 600px;
 }
 
-/* Right Panel - Tools */
+/* Right panel: right side outside game box */
 #hudRight {
-  top: 50px;
-  right: 50px;
+  top: -25px;
+  left: calc(982px); /* initial offset relative to left of gameWrapper */
   width: 175px;
-  height: 750px;
-  text-align: center;
+  height: 600px;
 }
 
-/* Bottom Panel - Inventory */
+
+/* Bottom panel: below game box */
 #hudBottom {
-  bottom: 25px;
+  bottom: -182px;       /* 175px height - 10px overlap = 165px from bottom */
   left: 50%;
   transform: translateX(-50%);
   width: 850px;
   height: 175px;
-  text-align: center;
-  line-height: -130px;
+  line-height: normal;
 }
+
 #backgroundCanvas {
   position: fixed;
   top: 0;
@@ -145,4 +141,51 @@ canvas {
   pointer-events: none;
   background: black;
 }
+#gameWrapper {
+  position: fixed;
+  top: calc(50% - 75px); /* shifted upward */
+  left: 50%;
+  width: 1000px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.drag-handle {
+  position: absolute;
+  cursor: grab;
+  width: 15px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: grab;
+  z-index: 1000;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
 
+.drag-handle:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Left panel handle outside left edge */
+.drag-handle-left {
+  top: 50%;
+  left: -7.5px; /* Half the width (15px) to go halfway out */
+  transform: translateY(-50%);
+}
+
+
+/* Right panel handle outside right edge */
+.drag-handle-right {
+  top: 50%;
+  right: -7.5px; /* Half the width */
+  transform: translateY(-50%);
+}
+
+/* Bottom panel handle outside bottom edge */
+.drag-handle-bottom {
+  left: 50%;
+  bottom: -7.5px; /* Half the height (15px) */
+  width: 30px;
+  height: 15px;
+  transform: translateX(-50%);
+}

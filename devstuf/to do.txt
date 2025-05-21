@@ -1,5 +1,10 @@
-fixer l'animation de fond avec delta
-fixer le hud en fonction des resolutions
+V - fixer l'animation de fond avec delta
+V - fixer le hud en fonction des resolutions
+v - repositioner HUD
+v- pouvoir drag les hud
 
+
+ajouter un look aux poignées
+desactiver le fait de selectioner le texte
 ajouter un bouton quiter au hud
 ajouter un bouton options au hud 
