@@ -1,1 +1,2 @@
-v0.44 - correction des nom fichiers et correction de mise en forme sur github
+v0.45 - correction des nom fichiers et correction de mise en forme pour github
+v0.46 - delta time pour animation et correction hud + draguability ( pas complet )
