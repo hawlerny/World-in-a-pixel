@@ -6,5 +6,6 @@ v- pouvoir drag les hud
 
 ajouter un look aux poignées
 desactiver le fait de selectioner le texte
+sauvegarder la position du hud
 ajouter un bouton quiter au hud
 ajouter un bouton options au hud 
