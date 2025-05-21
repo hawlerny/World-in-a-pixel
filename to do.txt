@@ -1,5 +1,0 @@
-fixer l'animation de fond avec delta
-fixer le hud en fonction des resolutions
-
-ajouter un bouton quiter au hud
-ajouter un bouton options au hud 
