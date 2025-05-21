@@ -1,83 +1,117 @@
 window.addEventListener("DOMContentLoaded", () => {
   const hudLeft = document.getElementById("hudLeft");
   const hudRight = document.getElementById("hudRight");
+  const hudBottom = document.getElementById("hudBottom");
+
+  // Get the drag handles inside each panel
+const leftHandle = hudLeft.querySelector(".drag-handle-left");
+const rightHandle = hudRight.querySelector(".drag-handle-right");
+const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
+
+
+  const GAME_HEIGHT = 600; // Adjust to your game container height
 
   let isDragging = false;
   let activePanel = null;
-  let dragSide = null;
+  let dragSide = null; // "left" | "right" | "bottom"
   let initialMouseX = 0;
-  let initialOffset = 0;
+  let initialMouseY = 0;
+  let initialOffsetX = 0;
+  let initialOffsetY = 0;
+  let draggingAxis = null; // "horizontal" | "vertical"
 
-  const panelWidth = 175;
-  const dragLimit1 = 15; // +/-10px flexibility
-  const dragLimit2 = 25; // +/-20px flexibility
+  // Clamping functions
 
-  function isOnEdge(e, panel, side) {
-    const edgeZone = 10;
-    if (side === "left") return e.offsetX <= edgeZone;
-    if (side === "right") return e.offsetX >= panel.offsetWidth - edgeZone;
-    return false;
+  function clampLeftPanel(x) {
+    return Math.max(-240, Math.min(-145, x));
   }
 
-  function clampLeftPanel(offset) {
-    const min = -panelWidth - dragLimit1;  // -185
-    const max = -panelWidth + dragLimit2;  // -165
-    return Math.max(min, Math.min(max, offset));
+  function clampRightPanel(x) {
+    return Math.max(960, Math.min(1055, x));
   }
 
-  function clampRightPanel(offset) {
-    const min = -panelWidth + dragLimit2;  // -165 (closer to game)
-    const max = -panelWidth - dragLimit1;  // -185 (further from game)
-    return Math.min(min, Math.max(max, offset));
+  function clampVertical(y, panel) {
+    const panelHeight = panel.offsetHeight;
+    const topLimit = -150;
+    const bottomLimit = GAME_HEIGHT - panelHeight + 200;
+    return Math.max(topLimit, Math.min(bottomLimit, y));
   }
+
+  function clampBottomPanel(y, panel) {
+    const panelHeight = panel.offsetHeight;
+    const baseTop = GAME_HEIGHT; // original top of bottom panel
+    const topLimit = baseTop - 30;
+    const bottomLimit = baseTop + 50;
+    return Math.max(topLimit, Math.min(bottomLimit, y));
+  }
+
+  // Mouse move handler
 
   function handleMouseMove(e) {
     if (!isDragging || !activePanel) return;
 
     const dx = e.clientX - initialMouseX;
+    const dy = e.clientY - initialMouseY;
 
-    if (dragSide === "left") {
-      const newOffset = clampLeftPanel(initialOffset + dx);
-      activePanel.style.left = `${newOffset}px`;
-    } else if (dragSide === "right") {
-      const newOffset = clampRightPanel(initialOffset - dx);
-      activePanel.style.right = `${newOffset}px`;
+    if (draggingAxis === "horizontal") {
+      if (dragSide === "left") {
+        const newLeft = clampLeftPanel(initialOffsetX + dx);
+        activePanel.style.left = `${newLeft}px`;
+      } else if (dragSide === "right") {
+        const newLeft = clampRightPanel(initialOffsetX + dx);
+        activePanel.style.left = `${newLeft}px`;
+      }
+    } else if (draggingAxis === "vertical") {
+      if (dragSide === "bottom") {
+        const newTop = clampBottomPanel(initialOffsetY + dy, activePanel);
+        activePanel.style.top = `${newTop}px`;
+      } else {
+        const newTop = clampVertical(initialOffsetY + dy, activePanel);
+        activePanel.style.top = `${newTop}px`;
+      }
     }
   }
+
+  // Mouse up handler
 
   function handleMouseUp() {
     isDragging = false;
     activePanel = null;
     dragSide = null;
+    draggingAxis = null;
     document.body.style.userSelect = "auto";
   }
 
-  function makeDraggable(panel, side) {
-    panel.addEventListener("mousemove", (e) => {
-      panel.style.cursor = isOnEdge(e, panel, side) ? "ew-resize" : "default";
-    });
+  // Attach draggable behavior to handles
 
-    panel.addEventListener("mousedown", (e) => {
-      if (!isOnEdge(e, panel, side)) return;
+  function makeHandleDraggable(handle, panel, side, axis) {
+    handle.style.cursor = axis === "horizontal" ? "ew-resize" : "ns-resize";
 
+    handle.addEventListener("mousedown", (e) => {
+      e.preventDefault();
       isDragging = true;
       activePanel = panel;
       dragSide = side;
+      draggingAxis = axis;
       initialMouseX = e.clientX;
+      initialMouseY = e.clientY;
 
-      if (side === "left") {
-        initialOffset = parseInt(getComputedStyle(panel).left, 10);
-      } else if (side === "right") {
-        initialOffset = parseInt(getComputedStyle(panel).right, 10);
-      }
+      const computed = getComputedStyle(panel);
+      initialOffsetX = parseInt(computed.left, 10);
+      initialOffsetY = parseInt(computed.top, 10);
 
       document.body.style.userSelect = "none";
     });
   }
 
+  // Global mouse listeners to track drag
+
   document.addEventListener("mousemove", handleMouseMove);
   document.addEventListener("mouseup", handleMouseUp);
 
-  makeDraggable(hudLeft, "left");
-  makeDraggable(hudRight, "right");
+  // Initialize draggable handles
+
+  makeHandleDraggable(leftHandle, hudLeft, "left", "horizontal");
+  makeHandleDraggable(rightHandle, hudRight, "right", "horizontal");
+  makeHandleDraggable(bottomHandle, hudBottom, "bottom", "vertical");
 });

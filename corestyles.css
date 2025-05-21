@@ -115,10 +115,11 @@ canvas {
 /* Right panel: right side outside game box */
 #hudRight {
   top: -25px;
-  right: -167px;
+  left: calc(982px); /* initial offset relative to left of gameWrapper */
   width: 175px;
   height: 600px;
 }
+
 
 /* Bottom panel: below game box */
 #hudBottom {
@@ -148,4 +149,43 @@ canvas {
   height: 600px;
   transform: translate(-50%, -50%);
   z-index: 10;
+}
+.drag-handle {
+  position: absolute;
+  cursor: grab;
+  width: 15px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: grab;
+  z-index: 1000;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.drag-handle:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Left panel handle outside left edge */
+.drag-handle-left {
+  top: 50%;
+  left: -7.5px; /* Half the width (15px) to go halfway out */
+  transform: translateY(-50%);
+}
+
+
+/* Right panel handle outside right edge */
+.drag-handle-right {
+  top: 50%;
+  right: -7.5px; /* Half the width */
+  transform: translateY(-50%);
+}
+
+/* Bottom panel handle outside bottom edge */
+.drag-handle-bottom {
+  left: 50%;
+  bottom: -7.5px; /* Half the height (15px) */
+  width: 30px;
+  height: 15px;
+  transform: translateX(-50%);
 }
