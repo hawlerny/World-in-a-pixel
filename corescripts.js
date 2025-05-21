@@ -31,8 +31,8 @@ window.onload = () => {
     const spacingX = width / cols;
     const spacingY = height / rows;
 
-    ctx.strokeStyle = "#0f0";                              "FAIRE CHANGEMENTS ICI POU TAILLE LIGNES(0.25 ou 0.7?"
-    ctx.lineWidth = 0.25;                              
+    ctx.strokeStyle = "#0f0";                            
+    ctx.lineWidth = 0.3;                              
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
