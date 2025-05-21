@@ -62,13 +62,21 @@ window.onload = () => {
     }
   }
 
-  function animate() {
-    t += 0.4;
-    drawMesh();
-    requestAnimationFrame(animate);
-  }
+ let lastTime = null;
+let speed = 0.25; // adjust this to control your animation speed
+
+function animate(now) {
+  if (lastTime === null) lastTime = now;
+  const delta = (now - lastTime) / 1000; // delta time in seconds
+  lastTime = now;
+
+  t += delta * 60 * speed; // 60 is to approximate what you had before
+
+  drawMesh();
+  requestAnimationFrame(animate);
+}
 
   window.addEventListener("resize", resize);
   resize();
-  animate();
+  requestAnimationFrame(animate);
 };

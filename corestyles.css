@@ -67,23 +67,28 @@ body {
 
 /* 5. Game layout */
 #gameLayout {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
-  width: 100%;
   z-index: 2;
+  pointer-events: none; /* Prevent accidental HUD blocking */
+  background: transparent !important;
 }
 
 /* 7. Main game box */
 #gameContainer {
   width: 1000px;
   height: 600px;
-  background-color: #222;
+  background: transparent !important;
   border: 2px solid #0f0;
   box-shadow: 0 0 18px #0f0;
-  margin-top: -175px; /* shifts game box upward */
   z-index: 2;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* 8. Canvas inside game */
@@ -94,55 +99,46 @@ canvas {
   background-color: #222;
 }
 /* 9. HUD Panels */
+#hudWrap {
+  position: absolute;
+  width: 1000px;
+  height: 600px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* HUD doesn't block mouse */
+  background: transparent !important;
+  z-index: 5;
+}
 .hudPanel {
-  position: fixed;
-  color: #0f0;
-  background-color: #111;
-  font-size: 16px;
-  border: 1px solid #0f0;
-  padding: 6px;
-  z-index: 3;
-  font-family: monospace;
+  position: absolute;
+  background: rgba(17,17,17,0.97);
+  border: 2px solid #0f0;
   box-shadow: 0 0 8px #0f0;
-  opacity: 0.98;
+  font-size: 20px;
+  font-family: monospace;
+  z-index: 10;
+  opacity: 0.97;
+  pointer-events: auto;
+  display: flex;
+  text-align: center;
 }
 
-/* Left Panel - Actions */
 #hudLeft {
-  top: 50px;
-  left: 50px;
-  width: 175px;
-  height: 750px;
-  text-align: center;
-}
-
-/* Right Panel - Tools */
-#hudRight {
-  top: 50px;
-  right: 50px;
-  width: 175px;
-  height: 750px;
-  text-align: center;
-}
-
-/* Bottom Panel - Inventory */
-#hudBottom {
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 850px;
-  height: 175px;
-  text-align: center;
-  line-height: -130px;
-}
-#backgroundCanvas {
-  position: fixed;
+  left: -185px; /* place left of game box */
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-  background: black;
+  width: 175px; height: 600px;
+  text-align: center
+}
+#hudRight {
+  right: -185px; /* place right of game box */
+  top: 0;
+  width: 175px; height: 600px;
+  text-align: center
+}
+#hudBottom {
+  left: 50%; bottom: -185px;
+  transform: translateX(-50%);
+  width: 850px; height: 175px;
+  text-align: center
 }
 
