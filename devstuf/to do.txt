@@ -5,8 +5,11 @@ v - pouvoir drag les hud
 v - desactiver le fait de selectioner le texte
 v - ajouter un look aux poignées
 v - animation autour hud au lancement
+X - animation des textes apres hud anims
 
-animation des textes apres hud anims
+ajouter un bouton quiter au hud ( fonctionel + animations )
 
-ajouter un bouton quiter au hud
+
+
+
 ajouter un bouton options au hud 

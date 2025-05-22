@@ -6,6 +6,9 @@ window.addEventListener("DOMContentLoaded", () => {
   // Get the drag handles inside each panel
 const leftHandle = hudLeft.querySelector(".drag-handle-left");
 const rightHandle = hudRight.querySelector(".drag-handle-right");
+const leftVerticalHandle = hudLeft.querySelector(".drag-handle-left-vertical");
+const rightVerticalHandle = hudRight.querySelector(".drag-handle-right-vertical");
+
 const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
 
 
@@ -117,5 +120,8 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
 
   makeHandleDraggable(leftHandle, hudLeft, "left", "horizontal");
   makeHandleDraggable(rightHandle, hudRight, "right", "horizontal");
+  makeHandleDraggable(leftVerticalHandle, hudLeft, "left", "vertical");
+makeHandleDraggable(rightVerticalHandle, hudRight, "right", "vertical");
+
   makeHandleDraggable(bottomHandle, hudBottom, "bottom", "vertical");
 });

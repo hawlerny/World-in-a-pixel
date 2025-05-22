@@ -247,4 +247,114 @@ canvas {
     stroke-dashoffset: 0;
   }
 }
+.drag-handle-left-vertical,
+.drag-handle-right-vertical {
+  position: absolute;
+  height: 10px;
+  width: 80%;
+  left: 10%;
+  bottom: -8px; /* Put at bottom — or use top: 10px if you prefer */
+  cursor: ns-resize;
+  z-index: 50;
+  background-color: rgba(0, 255, 0, 0.4); /* Brighter green to match theme */
+  border: 1px solid #0f0;
+  border-radius: 2px;
+}
+.drag-handle-left-vertical:hover,
+.drag-handle-right-vertical:hover {
+  background-color: rgba(0, 255, 0, 0.6);
+}
+.button-socket::after {
+  content: "";
+  position: absolute;
+  width: 60%;
+  height: 2px;
+  background: #000;
+  opacity: 0.4;
+  bottom: 12px;
+  left: 20%;
+  transform: rotateX(45deg);
+  z-index: 0;
+}
+
+/* Container holding the whole mechanism */
+.protected-button-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 100px;
+  height: 80px;
+}
+
+/* The socket – make it look recessed */
+.button-socket {
+  position: relative;
+  background: #111;
+  border: 2px solid #444;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The red button itself */
+#protectedButton {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle at center, #a00, #600);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 3px 0 #300;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Press effect */
+#protectedButton:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #300;
+}
+
+/* Soft glow on hover (only when glass is lifted via JS toggle) */
+.glass-lifted #protectedButton {
+  color: #fff;
+  background: radial-gradient(circle at center, #d00, #800);
+}
+
+/* Glass cover styles */
+.glass-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 80px;
+  background: rgba(8, 12, 15, 0.9); /* green tint */
+  border: 2px solid rgba(0, 255, 0, 0.2); /* soft green border */
+  backdrop-filter: blur(2px);
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+/* Drag bar on the glass */
+.grip-bar {
+  width: 80%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  margin: 6px auto;
+}
+
+
+
+
+
 
