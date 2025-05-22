@@ -13,25 +13,50 @@
     World in a <span class="pixelBox"></span>
   </header>
 
-
-
   <div id="gameWrapper">
     <div id="gameContainer">
       <canvas id="gameCanvas" width="1000" height="610"></canvas>
+    </div>
+
+    <div id="hudLeft" class="hudPanel">
+      <div class="hudTitle-wrapper" style="position: relative; display: inline-block; user-select: none;">
+        Actions
+        <svg class="hudBorder" width="120" height="40" viewBox="0 0 120 40" 
+     style="position: absolute; top: 50%; left: 50%; transform: translate(-60px, -18px); pointer-events: none; z-index: -1;">
+  <path d="M2 2 V36 H118 V2" fill="none" stroke="#0f0" stroke-width="2" stroke-linejoin="round" />
+</svg>
+
+      </div>
+      <div class="drag-handle drag-handle-left"></div>
+    </div>
+
+    <div id="hudRight" class="hudPanel">
+      <div class="hudTitle-wrapper" style="position: relative; display: inline-block; user-select: none;">
+        Tools
+        <svg class="hudBorder" width="120" height="40" viewBox="0 0 120 40" 
+     style="position: absolute; top: 50%; left: 50%; transform: translate(-60px, -18px); pointer-events: none; z-index: -1;">
+  <path d="M2 2 V36 H118 V2" fill="none" stroke="#0f0" stroke-width="2" stroke-linejoin="round" />
+</svg>
+
+      </div>
+      <div class="drag-handle drag-handle-right"></div>
+    </div>
+
+    <div id="hudBottom" class="hudPanel">
+      <div class="hudTitle-wrapper" style="position: relative; display: inline-block; user-select: none;">
+        Inventory
+        <svg class="hudBorder" width="120" height="40" viewBox="0 0 120 40" 
+     style="position: absolute; top: 50%; left: 50%; transform: translate(-60px, -18px); pointer-events: none; z-index: -1;">
+  <path d="M2 2 V36 H118 V2" fill="none" stroke="#0f0" stroke-width="2" stroke-linejoin="round" />
+</svg>
+
+      </div>
+      <div class="drag-handle drag-handle-bottom"></div>
+    </div>
+
   </div>
-	<div id="hudLeft" class="hudPanel">Actions
-		<div class="drag-handle drag-handle-left">
-	</div>
-</div>
-	<div id="hudRight" class="hudPanel">Tools
-		<div class="drag-handle drag-handle-right"></div>
-	</div>
-	<div id="hudBottom" class="hudPanel">Inventory
-		<div class="drag-handle drag-handle-bottom"></div>
-	</div>
 
- <script src="corescripts.js"></script>
- <script src="hudsliding.js"></script>
-
+  <script src="corescripts.js"></script>
+  <script src="hudsliding.js"></script>
 </body>
 </html>

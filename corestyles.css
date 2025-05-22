@@ -1,4 +1,5 @@
 body {
+  cursor: grab;
   margin: 0;
   background-color: black;
   overflow: hidden;
@@ -11,7 +12,9 @@ body {
   align-items: center;      /* center vertically */
   position: relative;
 }
-
+body:active {
+  cursor: grabbing;
+}
 /* 2. 1px edge border - darker green */
 #screenBorder {
   position: fixed;
@@ -41,8 +44,8 @@ body {
   z-index: 1000;
   left: 50%;
   transform: translateX(-50%);
+  user-select: none;
 }
-
 /* Slow blink for whole title */
 @keyframes slowBlink {
   0%, 25%, 50%, 75%, 100% { opacity: 1; }
@@ -102,6 +105,7 @@ canvas {
   opacity: 0.98;
   text-align: center;
   z-index: 20; /* above game container */
+  user-select: none;
 }
 
 /* Left panel: left side outside game box */
@@ -110,6 +114,8 @@ canvas {
   left: -167px;         /* 175px - 10px overlap = 165px shift */
   width: 175px;
   height: 600px;
+   border: 3px solid #0f0; /* full green border */
+  border-radius: 4px 0 0 4px;
 }
 
 /* Right panel: right side outside game box */
@@ -118,6 +124,8 @@ canvas {
   left: calc(982px); /* initial offset relative to left of gameWrapper */
   width: 175px;
   height: 600px;
+   border: 3px solid #0f0; /* full green border */
+  border-radius: 4px 0 0 4px;
 }
 
 
@@ -129,6 +137,8 @@ canvas {
   width: 850px;
   height: 175px;
   line-height: normal;
+  border: 3px solid #0f0; /* full green border */
+  border-radius: 4px 4px 0 0;
 }
 
 #backgroundCanvas {
@@ -153,39 +163,88 @@ canvas {
 .drag-handle {
   position: absolute;
   cursor: grab;
-  width: 15px;
-  height: 30px;
-  background-color: rgba(0, 0, 0, 0.3);
-  cursor: grab;
-  z-index: 1000;
-  border-radius: 3px;
+  width: 12px;       
+  height: 40px;      
+  background-color: rgba(0, 0, 0, 0.9); 
+  
+  /* Border and shading */
+  border: 1px solid #0b330b;
+  box-shadow:
+    inset 1px 1px 0 #0f6a0f,   
+    inset -1px -1px 0 #063006;
+  border-radius: 2px;
   transition: background-color 0.2s;
+  z-index: 1000;
+
+  /* Replace diagonal lines with tiny arrows */
+  background-image:
+    /* Outer pointing arrows (green) */
+    radial-gradient(circle at 50% 10%, transparent 3px, #0f0 4px, #0f0 5px, transparent 6px),
+    radial-gradient(circle at 50% 90%, transparent 3px, #0f0 4px, #0f0 5px, transparent 6px),
+    /* Inner pointing arrows (black) */
+    radial-gradient(circle at 50% 15%, transparent 1.5px, black 2px, black 3px, transparent 3.5px),
+    radial-gradient(circle at 50% 85%, transparent 1.5px, black 2px, black 3px, transparent 3.5px);
+  
+  background-repeat: repeat-y;
+  background-size: 12px 20px;
+  background-position: center top, center bottom, center top, center bottom;
 }
 
 .drag-handle:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 1);
 }
+
 
 /* Left panel handle outside left edge */
 .drag-handle-left {
   top: 50%;
-  left: -7.5px; /* Half the width (15px) to go halfway out */
+  left: -8px;
   transform: translateY(-50%);
+  cursor: ew-resize !important;
+  width: 12px;
+  height: 40px;
 }
+
 
 
 /* Right panel handle outside right edge */
 .drag-handle-right {
   top: 50%;
-  right: -7.5px; /* Half the width */
+  right: -8px;
   transform: translateY(-50%);
+  cursor: ew-resize !important;
+  width: 12px;
+  height: 40px;
 }
+
 
 /* Bottom panel handle outside bottom edge */
 .drag-handle-bottom {
   left: 50%;
-  bottom: -7.5px; /* Half the height (15px) */
-  width: 30px;
-  height: 15px;
+  bottom: -8px;
+  width: 40px;
+  height: 12px;
   transform: translateX(-50%);
+  cursor: ns-resize !important;
 }
+
+/* Simple green border with U shape */
+.hudTitle-wrapper {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+}
+/* Arrows using CSS borders or inline SVG */
+
+.hudBorder path {
+  stroke-dasharray: 186;
+  stroke-dashoffset: 186;
+  animation: drawU 3s ease-out forwards;
+}
+
+@keyframes drawU {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+

@@ -79,6 +79,7 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
     activePanel = null;
     dragSide = null;
     draggingAxis = null;
+	document.body.style.cursor = "";
     document.body.style.userSelect = "auto";
   }
 
@@ -101,6 +102,9 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
       initialOffsetY = parseInt(computed.top, 10);
 
       document.body.style.userSelect = "none";
+	   // Lock cursor to drag direction
+    document.documentElement.style.cursor =
+      axis === "horizontal" ? "ew-resize" : "ns-resize";
     });
   }
 
