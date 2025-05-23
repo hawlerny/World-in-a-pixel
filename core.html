@@ -9,11 +9,16 @@
 <body>
 <canvas id="backgroundCanvas"></canvas>
   <div id="screenBorder"></div>
+    <div id="fullscreenToggle" title="Toggle fullscreen">
+  ⛶
+</div>
   <header id="gameTitle">
     World in a <span class="pixelBox"></span>
   </header>
 
   <div id="gameWrapper">
+
+
     <div id="gameContainer">
       <canvas id="gameCanvas" width="1000" height="610"></canvas>
     </div>
@@ -27,16 +32,11 @@
 </svg>
 
       </div>
+	  <button id="saveQuitBtn">Save & Quit</button>
+
       <div class="drag-handle drag-handle-left"></div>
 	  <div class="drag-handle-left-vertical"></div>
-	  <div class="protected-button-container">
-  <div class="glass-cover" id="glassCover">
-    <div class="grip-bar"></div>
-  </div>
-  <div class="button-socket">
-    <button id="protectedButton"></button>
-  </div>
-</div>
+
 </div>
 
 
@@ -71,7 +71,9 @@
 
   <script src="corescripts.js"></script>
   <script src="hudsliding.js"></script>
-  <script src="leftpanelscripts.js"></script>
+  <script src="buttonsscript.js"></script>
+  <script src="savelogic.js"></script>
+
 
 </body>
 </html>
