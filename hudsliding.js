@@ -115,12 +115,12 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
   makeHandleDraggable(rightHandle, hudRight, "right", "horizontal");
   makeHandleDraggable(bottomHandle, hudBottom, "bottom", "vertical");
 });
-// This saves panel positions when they are moved OR when the player leaves the page.
 
+// === Persistent HUD Panel Positions (Cross-page Safe) ===
 (function() {
   const panelIds = ['hudLeft', 'hudRight', 'hudBottom'];
+  const STORAGE_PREFIX = 'worldInAPixel_'; // <--- Shared namespace for all pages
 
-  // Save all panel positions
   function saveAllPanelPositions() {
     panelIds.forEach(id => {
       const panel = document.getElementById(id);
@@ -132,16 +132,15 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
           bottom: panel.style.bottom || '',
           transform: panel.style.transform || ''
         };
-        localStorage.setItem(id + '_position', JSON.stringify(data));
+        localStorage.setItem(STORAGE_PREFIX + id + '_position', JSON.stringify(data));
       }
     });
   }
 
-  // Load panel positions when the page starts
   function loadAllPanelPositions() {
     panelIds.forEach(id => {
       const panel = document.getElementById(id);
-      const saved = localStorage.getItem(id + '_position');
+      const saved = localStorage.getItem(STORAGE_PREFIX + id + '_position');
       if (panel && saved) {
         const data = JSON.parse(saved);
         for (const [key, value] of Object.entries(data)) {
@@ -151,13 +150,13 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
     });
   }
 
-  // Initialize on startup
+  // Load on page ready
   window.addEventListener('DOMContentLoaded', loadAllPanelPositions);
 
-  // Save before closing or refreshing
+  // Save when closing or reloading
   window.addEventListener('beforeunload', saveAllPanelPositions);
 
-  // Also save right after a panel is released (mouseup or touchend)
+  // Save when user stops dragging
   window.addEventListener('mouseup', saveAllPanelPositions);
   window.addEventListener('touchend', saveAllPanelPositions);
 })();
