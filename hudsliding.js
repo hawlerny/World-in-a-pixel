@@ -115,42 +115,49 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
   makeHandleDraggable(rightHandle, hudRight, "right", "horizontal");
   makeHandleDraggable(bottomHandle, hudBottom, "bottom", "vertical");
 });
+// This saves panel positions when they are moved OR when the player leaves the page.
 
-// Function to save all panel positions
-function saveAllPanelPositions() {
-  const panels = ['hudLeft', 'hudRight', 'hudBottom'];
-  panels.forEach(id => {
-    const panel = document.getElementById(id);
-    if (panel) {
-      const data = {
-        left: panel.style.left || '',
-        right: panel.style.right || '',
-        top: panel.style.top || '',
-        bottom: panel.style.bottom || '',
-        transform: panel.style.transform || ''
-      };
-      localStorage.setItem(id + '_position', JSON.stringify(data));
-    }
-  });
-}
+(function() {
+  const panelIds = ['hudLeft', 'hudRight', 'hudBottom'];
 
-// Function to restore all panel positions
-function loadAllPanelPositions() {
-  const panels = ['hudLeft', 'hudRight', 'hudBottom'];
-  panels.forEach(id => {
-    const panel = document.getElementById(id);
-    const saved = localStorage.getItem(id + '_position');
-    if (panel && saved) {
-      const data = JSON.parse(saved);
-      for (const [key, value] of Object.entries(data)) {
-        if (value) panel.style[key] = value;
+  // Save all panel positions
+  function saveAllPanelPositions() {
+    panelIds.forEach(id => {
+      const panel = document.getElementById(id);
+      if (panel) {
+        const data = {
+          left: panel.style.left || '',
+          right: panel.style.right || '',
+          top: panel.style.top || '',
+          bottom: panel.style.bottom || '',
+          transform: panel.style.transform || ''
+        };
+        localStorage.setItem(id + '_position', JSON.stringify(data));
       }
-    }
-  });
-}
+    });
+  }
 
-// Load saved positions when page starts
-window.addEventListener('DOMContentLoaded', loadAllPanelPositions);
+  // Load panel positions when the page starts
+  function loadAllPanelPositions() {
+    panelIds.forEach(id => {
+      const panel = document.getElementById(id);
+      const saved = localStorage.getItem(id + '_position');
+      if (panel && saved) {
+        const data = JSON.parse(saved);
+        for (const [key, value] of Object.entries(data)) {
+          if (value) panel.style[key] = value;
+        }
+      }
+    });
+  }
 
-// Save panel positions when player leaves the page
-window.addEventListener('beforeunload', saveAllPanelPositions);
+  // Initialize on startup
+  window.addEventListener('DOMContentLoaded', loadAllPanelPositions);
+
+  // Save before closing or refreshing
+  window.addEventListener('beforeunload', saveAllPanelPositions);
+
+  // Also save right after a panel is released (mouseup or touchend)
+  window.addEventListener('mouseup', saveAllPanelPositions);
+  window.addEventListener('touchend', saveAllPanelPositions);
+})();
