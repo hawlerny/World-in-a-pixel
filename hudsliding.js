@@ -115,3 +115,42 @@ const bottomHandle = hudBottom.querySelector(".drag-handle-bottom");
   makeHandleDraggable(rightHandle, hudRight, "right", "horizontal");
   makeHandleDraggable(bottomHandle, hudBottom, "bottom", "vertical");
 });
+
+// Function to save all panel positions
+function saveAllPanelPositions() {
+  const panels = ['hudLeft', 'hudRight', 'hudBottom'];
+  panels.forEach(id => {
+    const panel = document.getElementById(id);
+    if (panel) {
+      const data = {
+        left: panel.style.left || '',
+        right: panel.style.right || '',
+        top: panel.style.top || '',
+        bottom: panel.style.bottom || '',
+        transform: panel.style.transform || ''
+      };
+      localStorage.setItem(id + '_position', JSON.stringify(data));
+    }
+  });
+}
+
+// Function to restore all panel positions
+function loadAllPanelPositions() {
+  const panels = ['hudLeft', 'hudRight', 'hudBottom'];
+  panels.forEach(id => {
+    const panel = document.getElementById(id);
+    const saved = localStorage.getItem(id + '_position');
+    if (panel && saved) {
+      const data = JSON.parse(saved);
+      for (const [key, value] of Object.entries(data)) {
+        if (value) panel.style[key] = value;
+      }
+    }
+  });
+}
+
+// Load saved positions when page starts
+window.addEventListener('DOMContentLoaded', loadAllPanelPositions);
+
+// Save panel positions when player leaves the page
+window.addEventListener('beforeunload', saveAllPanelPositions);
